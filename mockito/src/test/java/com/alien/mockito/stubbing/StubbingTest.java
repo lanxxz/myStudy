@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
@@ -144,7 +144,8 @@ public class StubbingTest {
 //        });
 
         when(list.get(anyInt())).thenAnswer(invocation -> {
-            Integer index = invocation.getArgumentAt(0, Integer.class);
+//            Integer index = invocation.getArgumentAt(0, Integer.class);
+            Integer index = invocation.getArgument(0, Integer.class);
             return String.valueOf(index * 10);
         });
         assertThat(list.get(0), equalTo("0"));
