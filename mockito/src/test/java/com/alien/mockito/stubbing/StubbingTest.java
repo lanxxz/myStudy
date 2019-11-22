@@ -152,6 +152,12 @@ public class StubbingTest {
         assertThat(list.get(999), equalTo("9990"));
     }
 
+    /**
+     * method name: stubbingWithRealcall <br/>
+     * description: 编写真实的返回
+     * @return: void
+     * @since: 2019-11-22
+     */
     @Test
     public void stubbingWithRealcall() {
         StubbingService service = mock(StubbingService.class);
