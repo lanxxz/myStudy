@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 /**
@@ -155,7 +156,64 @@ public class CollectorsTest2 {
 
     @Test
     public void test5() {
+        testReducingBinaryOperator();
+        testReducingBinaryOperatorAndIdentity();
+        testReducingBinaryOperatorAndIdentityAndFunction();
+        System.out.println("==============");
+        testSummarizingDouble();
+        testSummarizingInt();
+        testSummarizingLong();
+    }
 
+    private void testReducingBinaryOperator() {
+        System.out.println("testReducingBinaryOperator");
+        apples.stream().collect(
+                Collectors.reducing(
+                    BinaryOperator.maxBy(
+                        Comparator.comparingInt(Apple::getWeight))))
+            .ifPresent(System.out::println);
+    }
+
+    private void testReducingBinaryOperatorAndIdentity() {
+        System.out.println("testReducingBinaryOperatorAndIdentity");
+        Integer result = apples.stream()
+            .map(Apple::getWeight).collect(Collectors.reducing(0, (d1, d2) -> d1 + d2));
+        System.out.println(result);
+    }
+
+    private void testReducingBinaryOperatorAndIdentityAndFunction() {
+        System.out.println("testReducingBinaryOperatorAndIdentityAndFunction");
+        // 效果同前一个方法 testReducingBinaryOperatorAndIdentity 的示例
+        Integer result = apples.stream()
+            .collect(Collectors.reducing(0, Apple::getWeight, (d1, d2) -> d1 + d2));
+        System.out.println(result);
+    }
+
+    private void testSummarizingDouble() {
+        System.out.println("summarizingDouble");
+        Optional.of(
+                apples.stream()
+                    .collect(
+                        Collectors.summarizingDouble(Apple::getWeight)))
+            .ifPresent(System.out::println);
+    }
+
+    private void testSummarizingLong() {
+        System.out.println("summarizingLong");
+        Optional.of(
+                apples.stream()
+                        .collect(
+                                Collectors.summarizingLong(Apple::getWeight)))
+            .ifPresent(System.out::println);
+    }
+
+    private void testSummarizingInt() {
+        System.out.println("summarizingInt");
+        Optional.of(
+                apples.stream()
+                        .collect(
+                                Collectors.summarizingInt(Apple::getWeight)))
+            .ifPresent(System.out::println);
     }
 
 
