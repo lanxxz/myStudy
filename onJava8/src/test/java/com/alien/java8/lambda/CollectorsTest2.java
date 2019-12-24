@@ -5,9 +5,12 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.BinaryOperator;
@@ -25,9 +28,9 @@ public class CollectorsTest2 {
     private List<Apple> apples = Arrays.asList(
             new Apple("green", 151),
             new Apple("red", 161),
-            new Apple("yellow", 141),
+            new Apple("yellow", 156),
             new Apple("green", 150),
-            new Apple("red", 160),
+            new Apple("red", 143),
             new Apple("yellow", 140)
     );
 
@@ -40,6 +43,7 @@ public class CollectorsTest2 {
 
     private void testGroupingByConcurrentWithFunction() {
         System.out.println("testGroupingByConcurrentWithFunction");
+        // 返回一个 map 对象
         ConcurrentMap<String, List<Apple>> map =
                 apples.stream().collect(Collectors.groupingByConcurrent(Apple::getColor));
         Optional.ofNullable(map.getClass()).ifPresent(System.out::println);
@@ -133,6 +137,7 @@ public class CollectorsTest2 {
 
     @Test
     public void test4() {
+        // map对象 key 为 true 或 false
         testPartitioningByPredicate();
         testPartitioningByPredicateAndCollector();
     }
@@ -216,5 +221,127 @@ public class CollectorsTest2 {
             .ifPresent(System.out::println);
     }
 
+    @Test
+    public void test6() {
+        testSummingDouble();
+        testSummingLong();
+        testSummingInt();
+    }
+
+    private void testSummingDouble() {
+        System.out.println("testSummingDouble");
+        // 求和
+        Double result = apples.stream().collect(Collectors.summingDouble(Apple::getWeight));
+        Optional.of(result).ifPresent(System.out::println);
+
+        int sum = apples.stream().map(Apple::getWeight).mapToInt(Integer::intValue).sum();
+        System.out.println(sum);
+    }
+
+    private void testSummingLong() {
+        System.out.println("testSummingLong");
+        // 求和
+        Long result = apples.stream().collect(Collectors.summingLong(Apple::getWeight));
+        Optional.of(result).ifPresent(System.out::println);
+    }
+
+    private void testSummingInt() {
+        System.out.println("testSummingInt");
+        // 求和
+        Integer result = apples.stream().collect(Collectors.summingInt(Apple::getWeight));
+        Optional.of(result).ifPresent(System.out::println);
+    }
+
+    @Test
+    public void test7() {
+        testToCollection();
+        testToMap();
+        testToMapWithBinaryOperator();
+        testToMapWithBinaryOperatorWithSupplier();
+        System.out.println("===================");
+        testToConcurrentMap();
+        testToConcurrentMapWithBinaryOperator();
+        testToConcurrentMapWithBinaryOperatorWithSupplier();
+        System.out.println("===================");
+        testToList();
+        testToSet();
+    }
+
+    private void testToList() {
+        System.out.println("testToList");
+        List<Integer> result = apples.stream().map(Apple::getWeight).collect(Collectors.toList());
+        Optional.of(result).ifPresent(m -> {
+            System.out.println(m.getClass());
+            System.out.println(m);
+        });
+    }
+
+    private void testToSet() {
+        System.out.println("testToSet");
+        Set<Integer> result = apples.stream().map(Apple::getWeight).collect(Collectors.toSet());
+        Optional.of(result).ifPresent(m -> {
+            System.out.println(m.getClass());
+            System.out.println(m);
+        });
+    }
+
+    private void testToCollection() {
+        System.out.println("testToCollection");
+        HashSet<Apple> result = apples.stream().filter(a -> a.getWeight() > 150)
+                .collect(Collectors.toCollection(HashSet::new));
+        Optional.of(result).ifPresent(System.out::println);
+    }
+
+    private void testToMap() {
+        System.out.println("testToMap");
+        Map<String, Integer> result = apples.stream().filter(a -> a.getWeight() > 150)
+                .collect(Collectors.toMap(Apple::getColor, Apple::getWeight));
+        Optional.of(result).ifPresent(m -> {
+            System.out.println(m.getClass());
+            System.out.println(m);
+        });
+    }
+
+    private void testToMapWithBinaryOperator() {
+        System.out.println("testToMapWithBinaryOperator");
+        // key -> color, value -> total weight
+        Map<String, Integer> result = apples.stream()
+                .collect(Collectors.toMap(Apple::getColor, Apple::getWeight, (u, v) -> u + v));
+        Optional.of(result).ifPresent(m -> {
+            System.out.println(m.getClass());
+            System.out.println(m);
+        });
+    }
+
+    private void testToMapWithBinaryOperatorWithSupplier() {
+        System.out.println("testToMapWithBinaryOperatorWithSupplier");
+        TreeMap<String, Integer> result = apples.stream()
+                .collect(Collectors.toMap(Apple::getColor, Apple::getWeight,
+                        (u, v) -> u + v, TreeMap::new));
+        Optional.of(result).ifPresent(System.out::println);
+    }
+
+    private void testToConcurrentMap() {
+        System.out.println("testToConcurrentMap");
+        ConcurrentMap<String, Integer> result = apples.stream().filter(a -> a.getWeight() > 150)
+                .collect(Collectors.toConcurrentMap(Apple::getColor, Apple::getWeight));
+        Optional.of(result).ifPresent(System.out::println);
+    }
+
+    private void testToConcurrentMapWithBinaryOperator() {
+        System.out.println("testToConcurrentMapWithBinaryOperator");
+        // key -> color, value -> total weight
+        ConcurrentMap<String, Integer> result = apples.stream()
+                .collect(Collectors.toConcurrentMap(Apple::getColor, Apple::getWeight, (u, v) -> u + v));
+        Optional.of(result).ifPresent(System.out::println);
+    }
+
+    private void testToConcurrentMapWithBinaryOperatorWithSupplier() {
+        System.out.println("testToConcurrentMapWithBinaryOperatorWithSupplier");
+        ConcurrentSkipListMap<String, Integer> result = apples.stream()
+                .collect(Collectors.toConcurrentMap(Apple::getColor, Apple::getWeight,
+                        (u, v) -> u + v, ConcurrentSkipListMap::new));
+        Optional.of(result).ifPresent(System.out::println);
+    }
 
 }
