@@ -30,5 +30,12 @@ public class Main {
         System.out.println("Solution2方案：温度比当前温度高经过的天数：");
         System.out.println(Arrays.toString(solution2));
         System.out.println(t2 - t1);
+
+        t1 = System.currentTimeMillis();
+        int[] solution3 = Solution3.dailyTemperatures(t);
+        t2 = System.currentTimeMillis();
+        System.out.println("Solution3方案：温度比当前温度高经过的天数：");
+        System.out.println(Arrays.toString(solution3));
+        System.out.println(t2 - t1);
     }
 }
