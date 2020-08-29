@@ -6,11 +6,11 @@
         <artifactId>myStudy</artifactId>
         <groupId>com.alien</groupId>
         <version>1.0-SNAPSHOT</version>
-
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>onJava8</artifactId>
+    <artifactId>summary</artifactId>
+    <description>这个模块是 Java core 知识的总结</description>
 
 
 </project>

@@ -12,6 +12,7 @@
         <module>mockito</module>
         <module>onJava8</module>
         <module>leedcode</module>
+        <module>summary</module>
     </modules>
 
     <dependencies>
