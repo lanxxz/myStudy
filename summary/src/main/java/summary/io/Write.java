@@ -1,4 +1,4 @@
-package summary.io.io;
+package summary.io;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
