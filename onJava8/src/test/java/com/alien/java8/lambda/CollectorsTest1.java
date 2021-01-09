@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.IntSummaryStatistics;
 import java.util.List;
@@ -42,16 +43,28 @@ public class CollectorsTest1 {
                 new Apple("red", 160),
                 new Apple("yellow", 140)
         );
-        final List<Apple> reds = apples.stream()
-                .filter(apple -> "red".equals(apple.getColor()))
+        long start = System.currentTimeMillis();
+        List<Apple> reds = apples.stream()
+//                .filter(apple -> "red".equals(apple.getColor()))
+                .sorted(Comparator.comparing(Apple::getWeight))
                 .collect(toList());
         Optional.ofNullable(reds).ifPresent(System.out::println);
-        System.out.println("==========================");
-        Optional.ofNullable(groupByNormal(apples)).ifPresent(System.out::println);
-        System.out.println("==========================");
-        Optional.ofNullable(groupByFunction(apples)).ifPresent(System.out::println);
-        System.out.println("==========================");
-        Optional.ofNullable(groupByCollectors(apples)).ifPresent(System.out::println);
+        long end = System.currentTimeMillis();
+        System.out.println("=============" + (end - start));
+        start = System.currentTimeMillis();
+        reds = apples.parallelStream()
+//                .filter(apple -> "red".equals(apple.getColor()))
+                .sorted(Comparator.comparing(Apple::getWeight))
+                .collect(toList());
+        Optional.ofNullable(reds).ifPresent(System.out::println);
+        end = System.currentTimeMillis();
+        System.out.println("=============" + (end - start));
+//        System.out.println("==========================");
+//        Optional.ofNullable(groupByNormal(apples)).ifPresent(System.out::println);
+//        System.out.println("==========================");
+//        Optional.ofNullable(groupByFunction(apples)).ifPresent(System.out::println);
+//        System.out.println("==========================");
+//        Optional.ofNullable(groupByCollectors(apples)).ifPresent(System.out::println);
 
     }
 
