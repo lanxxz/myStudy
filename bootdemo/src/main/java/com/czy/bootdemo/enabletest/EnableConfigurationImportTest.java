@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
  * @author: alien
  * @since: 2021/01/09 13:10
  */
-//@Configuration
-//@EnableServer("")
+@Configuration
+@EnableServer("")
 public class EnableConfigurationImportTest {
 
     public static void main(String[] args) {

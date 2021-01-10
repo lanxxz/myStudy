@@ -19,8 +19,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Documented
 //@Import(FtpServer.class)
-//@Import(ServerConfiguration.class)
-@Import(ServerImportSelector.class)
+@Import(ServerConfiguration.class)
+//@Import(ServerImportSelector.class)
 //@Import(ServerImportBeanDefinitionRegistrar.class)
 public @interface EnableServer {
 
